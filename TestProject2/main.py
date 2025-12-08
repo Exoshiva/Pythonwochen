@@ -1,18 +1,28 @@
 import requests
 import json
-import google.generativeai as genai # Neu: Impport für die KI
+import google.generativeai as genai # Neu: Import für die KI
+import os
+from dotenv import load_dotenv
+import time
+
+# Läd die Variable aus der .env Datei in den Speicher des Programms
+load_dotenv()
 
 # --- KONFIGURATION --- Konstanten (PEP8: UPPER_CASE)
 API_URL = "https://jsonplaceholder.typicode.com/users"
 OUTPUT_FILE = "daten_export.json"
 
-# Neu: API Key Konfiguration
-# API Key hier ein Placeholder (Durch eigenen Key ersetzen!)
-GEMINI_API_KEI = "HIER DEINEN KEY EINFÜGEN"
-genai.configure(api_key=GEMINI_API_KEI)
+# Den Key sicher aus dem System holen
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not GEMINI_API_KEY:
+    raise ValueError("Kein API Key gefunden! Bitte .env Datei prüfen")
+
+genai.configure(api_key=GEMINI_API_KEY)
 
 # Ich nutze das Flash-Modell (schnell & günstig)
-MODEL_NAME = "gemini-1.5-flash"
+MODEL_NAME = "gemini-3-pro-preview"
+model = genai.GenerativeModel(MODEL_NAME)
 
 def hole_daten():
     print(f"Rufe Daten ab von: {API_URL} ...")
@@ -32,13 +42,13 @@ def hole_daten():
 def generiere_mail_draft(user): # Neu: Die KI-Funktion
     """Erstellt einen personalisierten"""
     
-    # Daten extrahieren für den Promt
+    # Daten extrahieren für den Prompt
     name = user['name']
     company = user['company']['name']
     slogan = user['company']['catchPhrase']
     
-    # Den Promt bauen (F-String)
-    promt = (
+    # Den Prompt bauen (F-String)
+    prompt = (
         f"Schreibe einen sehr kurzen, professionellen E-Mail_Entwurf (auf Deutsch)"
         f"für einen Vertriebler, der {name} von der Firma '{company}' anschreibt."
         f"Beziehe dich lobend auf deren Slogan: '{slogan}'."
@@ -47,8 +57,8 @@ def generiere_mail_draft(user): # Neu: Die KI-Funktion
     
     try:
         # Modell laden und anfragen
-        model = genai.GenerativeModel(MODEL_NAME)
-        response = model.generate_content(promt)
+
+        response = model.generate_content(prompt)
         
         # Anschließend den reinen Text zurückgeben (.text property)
         # .strip() entfernt Leerzeichen vorne/huínten
@@ -89,6 +99,10 @@ if __name__ == "__main__":
             
             # Und speichern das Ergebnis direkt im Dictonary des Users
             user["i_email_draft"] = ki_text
+            
+            # Hier baue ich 30 sekunden Pause ein um das Rate-Limit einzuhalten
+            print(" ... warte 30 sekunden (Rate Limit) ...")
+            time.sleep(30)
             
         # 3. Speichern (jetzt inkl. KI-Text)
         speichere_daten(biz_users)

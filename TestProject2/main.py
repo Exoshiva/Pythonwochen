@@ -5,6 +5,12 @@ import os
 from dotenv import load_dotenv
 import time
 
+try:
+    import win32com.client as win32
+except ImportError:
+    print("Outlook-Steuerung nicht verfügbar (pywin32 fehlt).")
+    win32 = None
+
 # Läd die Variable aus der .env Datei in den Speicher des Programms
 load_dotenv()
 
@@ -40,7 +46,7 @@ def hole_daten():
         return []
     
 def generiere_mail_draft(user): # Neu: Die KI-Funktion
-    """Erstellt einen personalisierten"""
+    """Erstellt eine personalisierte Mail"""
     
     # Daten extrahieren für den Prompt
     name = user['name']
@@ -66,6 +72,29 @@ def generiere_mail_draft(user): # Neu: Die KI-Funktion
 
     except Exception as e:
         return f"Fehler beim Generieren: {e}"
+    
+# --- NEUE FUNKTION: Outlook ---
+def erstelle_outlook_mail(empfaenger_email, betreff, body_text):
+    if not win32:
+        print("Outlook-Steuerung nicht verfügbar (pywin32 fehlt).")
+        return
+
+    try:
+        # Verbindung zu Outlook herstellen
+        outlook = win32.Dispatch('outlook.application')
+        mail = outlook.CreateItem(0) # 0 steht für E-Mail
+        
+        mail.To = empfaenger_email
+        mail.Subject = betreff
+        mail.Body = body_text
+        
+        # WICHTIG: .Display() öffnet das Fenster nur. 
+        # .Send() würde es sofort abschicken (gefährlich beim Testen!)
+        mail.Display() 
+        
+        print(f" -> Outlook-Fenster für {empfaenger_email} geöffnet.")
+    except Exception as e:
+        print(f"Fehler bei Outlook: {e}")
         
 def speichere_daten(daten):
     try:
@@ -78,7 +107,35 @@ def speichere_daten(daten):
             
 if __name__ == "__main__":
     users = hole_daten()
+    ziel_gruppe = users
+    print(f"Starte Prozess für {len(ziel_gruppe)} User... \n")
     
+    # Neu: Anzeige aller gefundenen User 
+    for user in ziel_gruppe:
+        name = user['name']
+        email = user['email']
+        
+        print(f"1. Generiere Text für: {name}...")
+        ki_text = generiere_mail_draft(user)
+        
+        # Speichern im Dictonary
+        user["i_email_draft"] = ki_text
+        
+        # Ausgabe in der Konsole
+        print(f" Vorschau: {ki_text[60]}...")
+        print("-------------------------------------------") 
+        
+        # 2. Outlook öffnen
+        print(f"2. Öffne Outlook-Fenster an: {email}...")
+        betreff =f"Kooperation mit {user['company']['name']}"
+        erstelle_outlook_mail(email, betreff, ki_text)
+        print("-------------------------------------------")    
+        
+        # kurze Pause damit Outlook hinterher kommt 
+        time.sleep(2)
+    speichere_daten(ziel_gruppe)
+    print("Fertig! Checke deine Taskleiste für offene Outlook-Fenster.")  
+        
     if users:
         # --- Die List Comprehension ---
         # 1. Filtern (Syntax [ELEMENT for ELEMENT in LISTE if BEDINGUNG])

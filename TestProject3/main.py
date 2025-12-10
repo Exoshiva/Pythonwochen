@@ -1,30 +1,28 @@
-def greeting():
-    """Begrüßt den Benutzer global."""
-    string = "Hallo User"
-    print(string)
+"""
+Projekt für die Pythonwoche: OOP Grundlagen - Zugriff auf Attribute
 
-greeting()
-
-print("-----------------------")
+Beschreibung: 
+Dieses Skript demonstriert, wie man eine Klasse als reinen Daten-Container nutzt
+und von außerhalb (extern) auf die Instanz-Attribute zugreift.
+Statt statischer Rückgabewerte werden hier dynamische Instanz-Variablen verwendet.
+"""
 
 class Person:
     """
-    Eine Klasse, um eine Person mit Namen und Alter zu repräsentieren.
+    Eine einfache Klasse, die Eigenschaften einer Person speichert.
+    Sie dient als 'Bauplan' für Datenobjekte.
     """
-    def __init__(self, name, age):
-        # Hier werden die Attribute gesetzt, die wir beim Erstellen übergeben
-        self.name = name 
+    def __init__(self, name, age, sex):
+        # Die Attribute werden hier dynamisch gesetzt
+        self.name = name
         self.age = age
-        
-    def introduce(self):
-        """Gibt eine Vorstellung der Person auf der Konsole aus."""
-        # Sauberer f-String statt Verkettung mit +
-        print(f"Hello my Name is {self.name}")
+        self.sex = sex
 
-# Instanziierung (Objekt erstellen)
-p1 = Person("Kirby", 25)
+# 1. Objekterstellung eines konkreten Objekts 'p1' mit Daten (Name, Alter, Geschlecht)
+p1 = Person("Kirby", 25, "Digital")
 
-# Methodenaufruf
-p1.introduce()
-
-print("-----------------------")
+# 2. Ausgabe: Zugriff auf die Daten von AUSSERHALB der Klasse
+# Ich nutze f-Strings (String Interpolation) für die Formatierung.
+# Ich rufen keine Methode mehr auf wie im vorherigen Code 
+# sondern greife direkt auf p1.name, p1.age etc. zu.
+print(f"Hallo mein Name ist {p1.name}. Mein Alter ist {p1.age}, ich bin {p1.sex} und das ist toll.")

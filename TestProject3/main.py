@@ -18,6 +18,7 @@ class Person:
         self.age = age
         self.sex = sex
 
+
 # 1. Objekterstellung eines konkreten Objekts 'p1' mit Daten (Name, Alter, Geschlecht)
 p1 = Person("Kirby", 25, "Digital")
 
@@ -26,3 +27,12 @@ p1 = Person("Kirby", 25, "Digital")
 # Ich rufen keine Methode mehr auf wie im vorherigen Code 
 # sondern greife direkt auf p1.name, p1.age etc. zu.
 print(f"Hallo mein Name ist {p1.name}. Mein Alter ist {p1.age}, ich bin {p1.sex} und das ist toll.")
+
+# Objekt erstellen
+p1 = Person("Kirby", 25)
+
+# Methodenaufruf
+p1.introduce()
+
+print("-----------------------")
+

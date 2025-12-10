@@ -1,54 +1,38 @@
+import os
 import requests
+from dotenv import load_dotenv
 
-# Dein API-Key (In echten Projekten verstecken wir den später in einer Config-Datei!)
-API_KEY = "8bd2e13d3b0bba705210a56d5a4c53d3"
+# 1. Lädt die Konfiguration aus der .env Datei
+load_dotenv()
 
-def hole_wetter(stadt, api_key=API_KEY):
-    """
-    Ruft das aktuelle Wetter von OpenWeatherMap ab.
-    Erwartet einen gültigen API-Key.
-    """
-    url = "https://api.openweathermap.org/data/2.5/weather"
-    params = {
-        "q": stadt,
-        "appid": api_key,
-        "units": "metric",
-        "lang": "de"
-    }
+# 2. Holt den Key sicher aus der Umgebung
+api_key = os.getenv("OPENWEATHER_API_KEY")
+city = input("Hallo! Bitte gib eine Stadt ein: ")
+# Aufruf des Key 
+url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
 
-    try:
-        response = requests.get(url, params=params, timeout=10)
-        response.raise_for_status() # wirft HTTPError bei 400er oder 500er
+try:
+	data = requests.get(url).json()
 
-        data = response.json()
-        return {
-            "stadt": data["name"],
-            "temperatur": data["main"]["temp"],
-            "gefühlt": data["main"]["feels_like"],
-            "luftfeuchtigkeit": data["main"]["humidity"],
-            "beschreibung": data["weather"][0]["description"],
-            "wind": data["wind"]["speed"]
-        }
-        
-    except requests.exceptions.HTTPError as e:
-        status = response.status_code  # Korrektur: .status_code statt .status.code
-        if status == 401:
-            print("X ungültiger API-Key (401)")
-        elif status == 404:
-            print(f"X Stadt '{stadt}' nicht gefunden (404)")
-        else:
-            print(f"X HTTP-Fehler ({status}): {e}")
-        return None
-        
-    except requests.exceptions.RequestException as e:
-        print(f"X Verbindungsfehler: {e}")
-        return None
+	temperatur = data["main"]["temp"]
+	gefühlt = data["main"]["feels_like"]
+	beschreibung = data["weather"][0]["description"]
+	feuchtigkeit = data["main"]["humidity"]
+	wind = data["wind"]["speed"]
 
-# Dieser Block sorgt dafür, dass der Test-Code nur läuft, 
-# wenn man die Datei direkt ausführt, aber nicht beim Importieren.
-if __name__ == "__main__":
-    ergebnis = hole_wetter("Leipzig")
-    if ergebnis:
-        print(f"Wetter in {ergebnis['stadt']}:")
-        print(f" - Temperatur: {ergebnis['temperatur']}°C (gefühlt eher so {ergebnis['gefühlt']}°C)")
-        print(f" - Beschreibung: {ergebnis['beschreibung']}")
+	print(f"Wetterbericht für {city}:")
+	print(f"Temperatur: {temperatur}°C")
+	print(f"Gefühlt: {gefühlt}°C")
+	print(f"Beschreibung: {beschreibung}")
+	print(f"Luftfeuchtigkeit: {feuchtigkeit}%")
+	print(f"Wind: {wind} m/s")
+
+	print(f"\nIn {city} beträgt die Temperatur {temperatur}°C und gefühlt {gefühlt}°C. Die Luftfeuchtigkeit beträgt {feuchtigkeit}%.")
+
+
+except:
+	print("Fehler: Stadt nicht gefunden oder API-Problem!")
+
+
+
+

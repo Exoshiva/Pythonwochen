@@ -26,7 +26,7 @@ if not GEMINI_API_KEY:
 
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Ich nutze das Flash-Modell (schnell & günstig)
+# Ich nutze das Pro-Modell 
 MODEL_NAME = "gemini-3-pro-preview"
 model = genai.GenerativeModel(MODEL_NAME)
 

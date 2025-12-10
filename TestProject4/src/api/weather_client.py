@@ -8,6 +8,8 @@ load_dotenv()
 # 2. Hier hole ich den Key sauber aus der Umgebung
 api_key = os.getenv("OPENWEATHER_API_KEY")
 
+#city = input("Hallo! Bitte gib eine Stadt ein: ")
+
 def get_weather_data(city):
     """_summary_
         Diese Funktion ruft die Wetterdaten ab und gibt sie zurück.
@@ -24,12 +26,12 @@ def get_weather_data(city):
             return "Fehler! Stadt nicht gefunden."
 
         data = response.json()
-
+        pass
         # 4. Jetzt gebe ich an was ich ausgelesen haben möchte
         temp = data["main"]["temp"]
         min_temp = data["main"]["temp_min"]
         max_temp = data["main"]["temp_max"]
-        humidity = data["main"]["feels_like"]
+        gefühlt = data["main"]["feels_like"]
         wind = data["wind"]["speed"]
         
         # Das Ergebnis wird hier für die Ausgabe zusammengebaut
@@ -37,7 +39,7 @@ def get_weather_data(city):
                     f"Temperatur: {temp}°C\n"
                     f"Niedrigste erwartete Temperatur in der Region beträgt {min_temp}\n"
                     f"Das Termometer klettert heute maximal bis {max_temp}\n"
-                    f"das fühlt sich an wie {humidity}\n"
+                    f"das fühlt sich aber an wie {gefühlt}\n"
                     f"Die Windgeschwindigkeit beträgt {wind} km/h\n")
         return ergebnis
 

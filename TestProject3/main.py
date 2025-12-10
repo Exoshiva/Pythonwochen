@@ -21,7 +21,7 @@ class Person:
         # Sauberer f-String statt Verkettung mit +
         print(f"Hello my Name is {self.name}")
 
-# Instanziierung (Objekt erstellen)
+# Objekt erstellen
 p1 = Person("Kirby", 25)
 
 # Methodenaufruf

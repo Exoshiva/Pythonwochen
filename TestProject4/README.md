@@ -16,4 +16,4 @@ Hier ist ein Blick auf die Benutzeroberfläche:
 
 Das Projekt folgt einer MVC-ähnlichen Struktur:
 * `src/api/weather_client.py`: Logik für den API-Aufruf.
-* `main_gui.py` GUI und Programmablauf.
+* `main_gui.py` `weather_client.py` GUI und Programmablauf.

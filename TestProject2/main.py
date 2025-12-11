@@ -45,7 +45,7 @@ def hole_daten():
         print(f"Fehler: {e}")
         return []
     
-def generiere_mail_draft(user): # Neu: Die KI-Funktion
+def generiere_mail_draft(user): # Die KI-Funktion
     """Erstellt eine personalisierte Mail"""
     
     # Daten extrahieren für den Prompt
@@ -53,7 +53,7 @@ def generiere_mail_draft(user): # Neu: Die KI-Funktion
     company = user['company']['name']
     slogan = user['company']['catchPhrase']
     
-    # Den Prompt bauen (F-String)
+    # Den Prompt bauen als F-String
     prompt = (
         f"Schreibe einen sehr kurzen, professionellen E-Mail_Entwurf (auf Deutsch)"
         f"für einen Vertriebler, der {name} von der Firma '{company}' anschreibt."
@@ -66,7 +66,7 @@ def generiere_mail_draft(user): # Neu: Die KI-Funktion
 
         response = model.generate_content(prompt)
         
-        # Anschließend den reinen Text zurückgeben (.text property)
+        # Anschließend gebe ich den reinen Text zurück
         # .strip() entfernt Leerzeichen vorne/huínten
         return response.text.strip()
 
@@ -87,9 +87,7 @@ def erstelle_outlook_mail(empfaenger_email, betreff, body_text):
         mail.To = empfaenger_email
         mail.Subject = betreff
         mail.Body = body_text
-        
-        # WICHTIG: .Display() öffnet das Fenster nur. 
-        # .Send() würde es sofort abschicken (gefährlich beim Testen!)
+
         mail.Display() 
         
         print(f" -> Outlook-Fenster für {empfaenger_email} geöffnet.")
@@ -98,7 +96,7 @@ def erstelle_outlook_mail(empfaenger_email, betreff, body_text):
         
 def speichere_daten(daten):
     try:
-        # encoding="utf-8" ist wichtig für Sonderzeichen
+        # encoding="utf-8" ist für Sonderzeichen
         with open(OUTPUT_FILE, "w", encoding="utf-8") as file:
             json.dump(daten, file, indent=2, ensure_ascii=False)
         print(f"Daten erfolgreich in {OUTPUT_FILE} gespeichert.")
@@ -142,26 +140,26 @@ if __name__ == "__main__":
         biz_users = [user for user in users if user["email"].endswith(".biz")]
         
         print(f"Gefiltert: {len(biz_users)} von {len(users)} Benutzern haben .biz Mails.")
-        # Hier wird jetzt nur die gefilterte Liste gespeichert
+        # Ich speicher jetzt nur die gefilterte Liste.
         speichere_daten(biz_users)
         
-        # 2. NEU: KI-Schleife über die gefilterten User
+        # 2. KI-Schleife über die gefilterten User
         print("Starte KI-Generierung...")
         
         for user in biz_users:
             print(f" -> Generiere Text für: {user['name']}")
             
-            # Hier rufen wir die KI auf
+            # Ich rufe die KI auf
             ki_text = generiere_mail_draft(user)
             
-            # Und speichern das Ergebnis direkt im Dictonary des Users
+            # Und speicher das Ergebnis direkt im Dictonary des Users
             user["i_email_draft"] = ki_text
             
-            # Hier baue ich 30 sekunden Pause ein um das Rate-Limit einzuhalten
+            # Jetzt baue ich 30 sekunden Pause ein um das Rate-Limit einzuhalten
             print(" ... warte 30 sekunden (Rate Limit) ...")
             time.sleep(30)
             
-        # 3. Speichern (jetzt inkl. KI-Text)
+        # 3. Jetzt wird gespeichert (inkl. KI-Text)
         speichere_daten(biz_users)
             
         

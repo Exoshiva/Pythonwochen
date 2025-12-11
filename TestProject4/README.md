@@ -10,7 +10,7 @@ Die App ermöglicht es dem Nutzer, einen Stadtnamen einzugeben und die aktuellen
 
 Hier ist ein Blick auf die Benutzeroberfläche:
 
-![Screenshot der Wetter App GUI](wetter_app_gui.png)
+![Screenshot der Wetter App GUI](Wetter_app_gui.png)
 
 ## Struktur
 

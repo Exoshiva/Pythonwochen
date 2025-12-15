@@ -67,7 +67,7 @@ def generiere_mail_draft(user): # Die KI-Funktion
         response = model.generate_content(prompt)
         
         # Anschließend gebe ich den reinen Text zurück
-        # .strip() entfernt Leerzeichen vorne/huínten
+        # .strip() entfernt Leerzeichen vorne/hinten
         return response.text.strip()
 
     except Exception as e:
@@ -88,7 +88,7 @@ def erstelle_outlook_mail(empfaenger_email, betreff, body_text):
         mail.Subject = betreff
         mail.Body = body_text
 
-        mail.Display() 
+        mail.Display() # Öffnet das Fenster
         
         print(f" -> Outlook-Fenster für {empfaenger_email} geöffnet.")
     except Exception as e:
@@ -105,7 +105,7 @@ def speichere_daten(daten):
             
 if __name__ == "__main__":
     users = hole_daten()
-    ziel_gruppe = users
+    ziel_gruppe = users[:1]
     print(f"Starte Prozess für {len(ziel_gruppe)} User... \n")
     
     # Neu: Anzeige aller gefundenen User 
@@ -120,12 +120,12 @@ if __name__ == "__main__":
         user["i_email_draft"] = ki_text
         
         # Ausgabe in der Konsole
-        print(f" Vorschau: {ki_text[60]}...")
+        print(f" Vorschau: {ki_text[50]}...")
         print("-------------------------------------------") 
         
         # 2. Outlook öffnen
         print(f"2. Öffne Outlook-Fenster an: {email}...")
-        betreff =f"Kooperation mit {user['company']['name']}"
+        betreff = f"Kooperation mit {user['company']['name']}"
         erstelle_outlook_mail(email, betreff, ki_text)
         print("-------------------------------------------")    
         
@@ -137,16 +137,16 @@ if __name__ == "__main__":
     if users:
         # --- Die List Comprehension ---
         # 1. Filtern (Syntax [ELEMENT for ELEMENT in LISTE if BEDINGUNG])
-        biz_users = [user for user in users if user["email"].endswith(".biz")]
+        ziel_gruppe = [user for user in users if user["email"].endswith(".biz")]
         
-        print(f"Gefiltert: {len(biz_users)} von {len(users)} Benutzern haben .biz Mails.")
+        #print(f"Gefiltert: {len(biz_users)} von {len(users)} Benutzern haben .biz Mails.")
         # Ich speicher jetzt nur die gefilterte Liste.
-        speichere_daten(biz_users)
+        #speichere_daten(biz_users)
         
         # 2. KI-Schleife über die gefilterten User
         print("Starte KI-Generierung...")
         
-        for user in biz_users:
+        for user in ziel_gruppe:
             print(f" -> Generiere Text für: {user['name']}")
             
             # Ich rufe die KI auf
@@ -160,6 +160,6 @@ if __name__ == "__main__":
             time.sleep(30)
             
         # 3. Jetzt wird gespeichert (inkl. KI-Text)
-        speichere_daten(biz_users)
+        speichere_daten(ziel_gruppe)
             
         

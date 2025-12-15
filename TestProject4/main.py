@@ -38,8 +38,8 @@ if response.status_code == 200:
     print(f"Wind: {wind} m/s")
     
     # Deine Zusammenfassung
-    print(f"\nIn {city} beträgt die Temperatur {temperatur}°C und gefühlt {gefühlt}°C. Die Luftfeuchtigkeit beträgt {feuchtigkeit}%.")
-    print("Fertig!")
+    print(f"\nIn {city} beträgt die Temperatur {temperatur}°C gefühlt {gefühlt}°C. Die Luftfeuchtigkeit beträgt {feuchtigkeit}%.")
+    print("Wetter-Check beendet!")
 
 else:
     print("Fehler: Stadt nicht gefunden oder API-Problem!")

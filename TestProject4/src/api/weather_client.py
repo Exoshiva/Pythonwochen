@@ -11,7 +11,7 @@ api_key = os.getenv("OPENWEATHER_API_KEY")
 #city = input("Hallo! Bitte gib eine Stadt ein: ")
 
 def get_weather_data(city):
-    """_summary_
+    """
         Diese Funktion ruft die Wetterdaten ab und gibt sie zurück.
     """
     if not city:
@@ -26,7 +26,7 @@ def get_weather_data(city):
             return "Fehler! Stadt nicht gefunden."
 
         data = response.json()
-        pass
+        #pass
         # 4. Jetzt gebe ich an was ich ausgelesen haben möchte
         temp = data["main"]["temp"]
         min_temp = data["main"]["temp_min"]
@@ -38,7 +38,7 @@ def get_weather_data(city):
         ergebnis = (f"Wetter in {city}:\n"
                     f"Temperatur: {temp}°C\n"
                     f"Niedrigste erwartete Temperatur in der Region beträgt {min_temp}\n"
-                    f"Das Termometer klettert heute maximal bis {max_temp}\n"
+                    f"Das Thermometer klettert heute maximal bis {max_temp}\n"
                     f"das fühlt sich aber an wie {gefühlt}\n"
                     f"Die Windgeschwindigkeit beträgt {wind} km/h\n")
         return ergebnis
@@ -46,7 +46,7 @@ def get_weather_data(city):
 # Und wenn das erledigt ist gebe es das zusammengebaute Ergebnis zurück
     except Exception as e:
         print(f"Fehler:{e}")
-        return "Fehler: Stadt wurde nicht gefunden oder API-Proplem. Bitte versuchen Sie es erneut."
+        return "Fehler: Stadt wurde nicht gefunden oder API-Problem. Bitte versuchen Sie es erneut."
 
 
 # Kleiner Test ob es funktioniert

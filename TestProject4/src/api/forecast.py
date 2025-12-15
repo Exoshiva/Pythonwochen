@@ -6,11 +6,10 @@ from datetime import datetime, timedelta # Für Zeitrechnung
 load_dotenv() 
 
 # 2. Den Schlüssel sicher aus der "Umgebung" holen
-# WICHTIG: In den Klammern muss GENAU der Name stehen, 
-# den du in deiner .env Datei links vom = geschrieben hast (z.B. API_KEY oder WEATHER_API_KEY)
+
 api_key = os.getenv("API_KEY")
 
-# Kleiner Test (kannst du später löschen), um zu sehen, ob er geladen wurde:
+# Kleiner Test ob der Key geladen wurde
 if api_key:
     print("API Key erfolgreich geladen!")
 else:

@@ -1,0 +1,14 @@
+# --- Sicherheit ---
+.env
+
+# --- Umgebungen & Cache ---
+.venv/
+__pycache__/
+
+# --- Generierte Dateien (Output) ---
+daten_export.json
+
+
+*.log
+.DS_Store
+

@@ -17,12 +17,12 @@ def save_to_excel(stadt, temp, beschreibung):
     # 1. Erst nur den Pfad zum ORDNER bauen
     folder_path = os.path.join(os.getcwd(), FOLDERNAME) 
     
-    # 2. WICHTIG!: Prüfen, ob der Ordner existiert, sonst erstellen (mkdir)
+    # 2. WICHTIG!: Prüfe, ob der Ordner existiert, sonst erstellen (mkdir)
     # Ohne das stürzt openpyxl ab, weil es nicht in nicht-existente Ordner speichern kann.
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
-    # 3. Jetzt den Pfad zur DATEI im Ordner bauen
+    # 3. Jetzt den Pfad zur Datei im Ordner bauen
     file_path = os.path.join(folder_path, FILENAME) 
     # ### FIX ENDE ###
     
@@ -31,8 +31,22 @@ def save_to_excel(stadt, temp, beschreibung):
         if not os.path.exists(file_path):
             # Wenn keine Datei existiert wird eine neue angelegt
             wb = Workbook()
+            # Das Standart leere Blatt entferne ich hier
             ws = wb.active
-            ws.title = "Wetterdaten"
+            wb.title = stadt
+        else:
+            # Vorhandene Excel-Datei laden
+            wb = load_workbook(file_path)
+            
+        # --- NEUE LOGIK FÜR STÄDTE-TABS ---
+        
+        # Pfüft ob es für die Stadt schon ein Tabellenblatt gibt
+        if stadt in wb.sheetnames:
+            # Blatt existiert -> wird es genutzt
+            ws = wb[stadt]
+        else:
+            # Blatt existiert noch nicht -> wir erstellen es
+            ws = wb.create_sheet(stadt)
             
             # Überschriften in der Excel definieren
             ws.append(["Zeitstempel", "Stadt", "Temperatur", "Beschreibung"])
@@ -41,10 +55,8 @@ def save_to_excel(stadt, temp, beschreibung):
             for cell in ws[1]:
                 cell.font = Font(bold=True, color="FFFFFF")
                 cell.fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
-        else:
-            # Vorhandene Excel Datei laden
-            wb = load_workbook(file_path)
-            ws = wb.active
+
+        # --- ENDE NEUE LOGIK ---
         
         # Daten für die neue Zeile vorbereiten
         zeit=datetime.now().strftime("%Y-%m-%d %H:%M:%S")

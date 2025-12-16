@@ -9,7 +9,7 @@ import pandas as pd
 FOLDERNAME = "Wetter-Berichte" # <- NEU: Ordner für Excel Dateien hinzugefügt
 FILENAME  = "wetter_report.xlsx"
 
-def save_to_excel(stadt, temp, beschreibung):
+def save_to_excel(stadt, temp, beschreibung, wind, hum):
     """
     Speichert Wetterdaten in eine Excel-Datei
     """
@@ -49,7 +49,7 @@ def save_to_excel(stadt, temp, beschreibung):
             ws = wb.create_sheet(stadt)
             
             # Überschriften in der Excel definieren
-            ws.append(["Zeitstempel", "Stadt", "Temperatur", "Beschreibung"])
+            ws.append(["Zeitstempel", "Stadt", "Temperatur", "Beschreibung", "Windgeschwindkeit", "Luftfeuchtigkeit"])
             
             # Die Überschriften Formatieren (Blau und Fett)
             for cell in ws[1]:
@@ -60,7 +60,7 @@ def save_to_excel(stadt, temp, beschreibung):
         
         # Daten für die neue Zeile vorbereiten
         zeit=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        neue_zeile = [zeit, stadt, temp, beschreibung]
+        neue_zeile = [zeit, stadt, temp, beschreibung, wind, hum]
         
         # Die neue Zeile hinzufügen
         ws.append(neue_zeile)
@@ -68,8 +68,11 @@ def save_to_excel(stadt, temp, beschreibung):
         # Spaltenbreite für bessere Lesbarkeit anpassen
         ws.column_dimensions["A"].width = 20
         ws.column_dimensions["B"].width = 15
-        ws.column_dimensions["C"].width = 30
+        ws.column_dimensions["C"].width = 15
         ws.column_dimensions["D"].width = 30
+        ws.column_dimensions["E"].width = 20
+        ws.column_dimensions["F"].width = 20
+
         
         # Die Änderungen speichern
         wb.save(file_path)

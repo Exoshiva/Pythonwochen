@@ -1,0 +1,58 @@
+# 🌦️ Wetter App v1.1 (Python & Excel)
+
+Ein Python-Tool, das aktuelle Wetterdaten über eine API abruft, in einer grafischen Oberfläche (GUI) anzeigt und automatisch sortiert in einen Excel-Bericht exportiert.
+
+## Features
+
+* **Live-Wetterdaten:** Abruf aktueller Daten (Temperatur, Beschreibung) via API.
+* **Grafische Oberfläche (GUI):** Benutzerfreundliche Eingabe von Städten ohne Terminal-Zwang.
+* **Intelligenter Excel-Export:**
+    * Erstellt automatisch eine `wetter_report.xlsx`.
+    * **Dynamische Tabellenblätter:** Jede Stadt erhält automatisch ein eigenes Tabellenblatt (Sheet).
+    * Historie: Neue Daten werden unten angefügt, ohne alte zu überschreiben.
+    * Formatierung: Automatische Header-Formatierung (Fett & Blau).
+
+## Projektstruktur
+
+* `main.py`: Der Einstiegspunkt (Entry Point). Startet die Anwendung.
+* `gui.py`: Erstellt das Fenster, Buttons und verknüpft die Logik.
+* `api_handler.py`: Holt die Wetterdaten von der API.
+* `excel_handler.py`: Speichert die Daten sortiert in die Excel-Datei (`Wetter-Berichte/`).
+* `.env`: Speichert sensible Daten wie den API-Key (wird nicht auf GitHub hochgeladen).
+* `config.py`: Konfigurationsdatei (Platzhalter für zukünftige Einstellungen).
+* `requirements.txt`: Liste aller benötigten Python-Bibliotheken.
+
+---
+
+## Installation & Start
+
+1.  **Repository klonen:**
+    ```bash
+    git clone https://github.com/Exoshiva/Pythonwochen/tree/main/TestProject6
+    ```
+
+2.  **Abhängigkeiten installieren:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3.  **Programm starten:**
+    ```bash
+    python main.py
+    ```
+
+## Nutzung
+
+1.  Gib einen Stadtnamen in das Suchfeld ein.
+2.  Klicke auf "Wetter abrufen".
+3.  Die Daten werden angezeigt und **automatisch** im Hintergrund in den Ordner `Wetter-Berichte` gespeichert.
+
+## Verwendete Technologien
+
+* Python 3.x
+* **Pandas & OpenPyXL:** Für das Excel-Management.
+* **Tkinter / CustomTkinter:** Für die GUI.
+* **Requests:** Für den API-Abruf.
+
+---
+*Erstellt als Abschlussprojekt im Python-Modul.*

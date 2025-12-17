@@ -14,12 +14,12 @@ die .env Datei bleibt aber aus Sicherheitsgründen privat auf dem PC.
 
 # --- GUI Einstellungen ---
 APP_TITLE = "Wetter App v1.3"  # Versions-Upgrade ;)
-WINDOW_SIZE = "500x525"        # Die perfekte Höhe für Daten + Vorhersage
+WINDOW_SIZE = "500x525"        # Die perfekte Höhe für Daten + Vorhersage für diese Anwendung
 
 # --- Excel Einstellungen ---
 EXCEL_FOLDER = "Wetter-Berichte"
 EXCEL_FILENAME = "wetter_report.xlsx"
 
-# --- Design Konstanten (Optional, falls du Farben zentral steuern willst) ---
+# --- Design Konstanten (Optional, falls man Farben zentral steuern möchte) ---
 FONT_MAIN = ("Arial", 16, "bold")
 FONT_NORMAL = ("Arial", 12)

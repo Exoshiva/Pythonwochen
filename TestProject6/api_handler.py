@@ -50,7 +50,7 @@ def get_weather_data(city):
         # Dies gibt alle anderen Fehler aus
         return {"error": f"Fehler: {e}"}
     
-    # --- NEU: Funktion für die Wettervorhersage ---
+    # --- Funktion für die Wettervorhersage ---
 def get_forecast_data(city):
     """
     Holt die 5-Tage-Vorhersage und filtert einen Wert pro Tag heraus.
@@ -76,7 +76,7 @@ def get_forecast_data(city):
                     "desc": item['weather'][0]['description'], # <--- Wetter Beschreibung
                     "icon": item['weather'][0]['icon'] # <--- Passendes Wetter Bild
                 })
-        # Falls wir zufällig vor 12 Uhr abrufen und der heutige Tag fehlt, nehmen wir die ersten 5 Treffer
+        # Falls wir zufällig vor 12 Uhr abrufen und der heutige Tag fehlt (warum auch immer), nehmen wir die ersten 5 Treffer
         return filtered_forecast[:5] # Begrenzt auf die ersten 5 Einträge
     except Exception as e:
         print(f"Vorhersage-Fehler: {e}")

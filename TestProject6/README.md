@@ -4,7 +4,7 @@ Ein Python-Tool, das aktuelle Wetterdaten über eine API abruft, in einer grafis
 
 ## Vorschau
 
-Hier ist die App in Aktion – vom Start bis zur Vorhersage:
+Hier ist die App in Aktion - vom Start bis zur Vorhersage:
 
 | Startbildschirm | Ergebnis & 5-Tage-Trend |
 | :---: | :---: |

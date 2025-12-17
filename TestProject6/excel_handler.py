@@ -1,3 +1,4 @@
+import config
 import openpyxl
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, PatternFill
@@ -6,8 +7,8 @@ from datetime import datetime
 import pandas as pd
 
 # Hier habe ich den Dateinamen der Excel-Tabelle festgelegt
-FOLDERNAME = "Wetter-Berichte" # <- NEU: Ordner für Excel Dateien hinzugefügt
-FILENAME  = "wetter_report.xlsx"
+FOLDERNAME = config.EXCEL_FOLDER # <--- NEU: Statt "Wetter-Berichte"
+FILENAME  = config.EXCEL_FILENAME # <--- NEU: Statt "wetter_report.xlsx"
 
 def save_to_excel(stadt, temp, beschreibung, wind, hum):
     """

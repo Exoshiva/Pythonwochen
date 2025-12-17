@@ -1,3 +1,4 @@
+import config
 from datetime import datetime # <--- NEU: Für forecast (Wettervorhersage)
 import customtkinter as ctk # Für den Import von Customtkinter
 # Importierung der eigenen Module 
@@ -18,8 +19,8 @@ class WeatherApp(ctk.CTk):
         ctk.set_default_color_theme("blue") # Themes: "blue" (Standard), "green", "dark-blue")
         
         # Das Fenster Setup der App
-        self.title("Wetter App v1.2") # Version erhöht ;)
-        self.geometry("500x500") # <--- Neu: Breite angepasst für Grid Layout (Test)
+        self.title(config.APP_TITLE) # Version erhöht ;)
+        self.geometry(config.WINDOW_SIZE) # <--- Neu: Verweis die Daten aus der Config zu laden 
         
         # Die UI der App
         self.create_widgets()
@@ -35,15 +36,11 @@ class WeatherApp(ctk.CTk):
         # Enter-Taste (Return) löst jetzt auch den Klick aus
         self.entry_feld.bind('<Return>', self.button_klick)
         self.entry_feld.focus()
-        
-        # Das Ereignis-Label <--- Wurde ersetzt durch Punkt 4. und den Umstieg auf Grid-Layout
-        #self.label_anzeige = ctk.CTkLabel(self, text="Bitte Stadt eingeben.", font=("Arial", 11), justify="left")
-        #self.label_anzeige.pack(pady=20)
-        
+
         # Ergebnis-Bereich 
         # 1. Ich nutze einen Container (Frame), damit Icon und Text nebeneinander Platziert werden können
-        self.ergebnis_frame = ctk.CTkFrame(self, fg_color="transparent")
-        self.ergebnis_frame.pack(pady=20, fill="both", expand=True, padx=50)
+        self.ergebnis_frame = ctk.CTkFrame(self)
+        self.ergebnis_frame.pack(pady=10, fill="both", expand=True, padx=60)
         
         # 2. Spalten-Konfiguration (Links Icon, Rechts Text)
         self.ergebnis_frame.grid_columnconfigure(0, weight=1)
@@ -51,13 +48,13 @@ class WeatherApp(ctk.CTk):
         
         # 3. Das Icon-Label (Links) - Hier landet das Bild 
         self.label_icon = ctk.CTkLabel(self.ergebnis_frame, text="")
-        self.label_icon.grid(row=0, column=0, padx=10, pady=10)
+        self.label_icon.grid(row=0, column=0, padx=25, pady=10)
         
         # 4. Das Text Label (Rechts)
         self.label_anzeige = ctk.CTkLabel(self.ergebnis_frame, text="Bitte Stadt eingeben", font=("Arial", 14), justify="left", anchor="w")
-        self.label_anzeige.grid(row=0, column=1, sticky="w", padx=(0, 10)) # sticky="w" (w = West) und klebt am Icon
+        self.label_anzeige.grid(row=0, column=1, sticky="w", padx=(10, 0)) # sticky="w" (w = West) und klebt am Icon Container
         
-        # 5. Jetzt noch ein Extra Label für Fehleranzeigen (ganz unten)
+        # 5. Jetzt noch ein Extra Label für Fehleranzeigen (ganz unten) # <--- wird noch nicht angezeigt (Fixen!)
         self.error_label = ctk.CTkLabel(self, text="", text_color="red", font=("Arial", 12))
         self.error_label.pack(pady=5) 
         
@@ -67,7 +64,7 @@ class WeatherApp(ctk.CTk):
         
         # 7. Container für die 5-Tage-Vorschau (ganz unten) # <--- NEU: Für die Wettervorhersage
         self.forecast_label = ctk.CTkLabel(self, text="5-Tage-Trend (Mittags)", font=("Arial", 12, "bold"))
-        self.forecast_label.pack(pady=(20, 5)) 
+        self.forecast_label.pack(pady=(20, 5)) # <--- Breite 20, Abstand zum anderen Container 5 in der Y-Achse (senkrecht)
         
         self.forecast_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.forecast_frame.pack(fill="x", padx=10, pady=5)
@@ -92,8 +89,8 @@ class WeatherApp(ctk.CTk):
             text = ergebnis.get("error") if ergebnis.get("error") else ergebnis.get("Fehler")
             
             #Fehler anzeigen lassen (falls ein Fehler vorhanden ist)
-            self.label_anzeige.configure(text=text) # <--- KORREKTUR: Nutzung des error_labels
-            self.label_icon.configure(image=None) # <--- NEU: Bei Behler wird das Bild entfernt
+            self.error_label.configure(text=text) # <--- KORREKTUR: Nutzung des error_labels
+            self.label_icon.configure(image=None) # <--- NEU: Bei Fehler wird das Bild entfernt
             self.label_anzeige.configure(text="")
         else:
             # Bei Erfolgreicher Anfrage wird der Text für die Ausgabe in der GUI zusammengebaut

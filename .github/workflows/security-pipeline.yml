@@ -1,0 +1,24 @@
+name: Mein erster DevSecOps Scan
+
+# Wann soll das passieren? Bei jedem Push (Upload) von Code.
+on: [push]
+
+jobs:
+  security-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code herunterladen
+        uses: actions/checkout@v3
+
+      - name: Python aufsetzen
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Security-Tool installieren (Bandit)
+        # Bandit ist ein Tool, das Python-Code nach Sicherheitslücken scannt
+        run: pip install bandit
+
+      - name: Code scannen
+        # -r bedeutet rekursiv (alles scannen), -ll bedeutet "Level Low" (alles finden)
+        run: bandit -r . -ll

@@ -1,4 +1,5 @@
-import config
+from PIL import Image, ImageTk # <--- NEU: Um das Standart Icon von PyInstaller zu ändern (mit eigenem Bild)
+import config # <--- Importiert configurationsdaten für 
 from datetime import datetime # <--- NEU: Für forecast (Wettervorhersage)
 import customtkinter as ctk # Für den Import von Customtkinter
 # Importierung der eigenen Module 
@@ -21,6 +22,17 @@ class WeatherApp(ctk.CTk):
         # Das Fenster Setup der App
         self.title(config.APP_TITLE) # Version erhöht ;)
         self.geometry(config.WINDOW_SIZE) # <--- Neu: Verweis die Daten aus der Config zu laden 
+        
+        # --- NEU: Das Fenster-Icon ---
+        # Der folgende Codeblock versucht das Icon zu laden.
+        # wenn es fehlt, stürzt die App nicht ab sondern nimmt das Standart Icon von CustomTkinter
+        try:
+            icon_img = ImageTk.PhotoImage(file="app_icon.ico")
+            
+            # Setzt das Icon für Fenster und Taskleiste
+            self.wm_iconphoto(False, icon_img)
+        except Exception as e:
+            print(f"Hinweis: Fenster-Icon konnte nicht geladen werden: {e}")
         
         # Die UI der App
         self.create_widgets()
@@ -190,9 +202,9 @@ class WeatherApp(ctk.CTk):
                 
                 lbl_icon = ctk.CTkLabel(card, text="", image=icon_img) 
                 lbl_icon.pack(pady=0)
-            except:
-                lbl_icon = ctk.CTkLabel(card, text="☁️")
-                lbl_icon.pack()
+            except Exception as e:
+                print(e)
+
             
             # Label: Temperatur
             lbl_temp = ctk.CTkLabel(card, text=f"{round(day['temp'])}C", font=("Arial", 12, "bold"))

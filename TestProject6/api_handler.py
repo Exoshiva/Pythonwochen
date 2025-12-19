@@ -58,7 +58,7 @@ def get_forecast_data(city):
     if not city:
         return None
     # Die neue URL für "forecast" statt "weather"
-    url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units=metric"
+    url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units=metric&lang=de"
     
     try:
         response = requests.get(url)

@@ -35,7 +35,7 @@ class WeatherApp(ctk.CTk):
             print(f"Hinweis: Fenster-Icon konnte nicht geladen werden: {e}")
         
         # Die UI der App
-        self.create_widgets()
+        self.create_widgets()  
         
     def create_widgets(self):
         # Die Überschrift der App

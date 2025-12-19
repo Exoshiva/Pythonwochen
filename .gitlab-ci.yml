@@ -1,0 +1,14 @@
+# .gitlab-ci.yml
+image: python:3.9-slim
+
+stages:
+  - security
+
+bandit_scan:
+  stage: security
+  before_script:
+    - pip install bandit
+  script:
+    # Rekursiver Scan (-r), Level Low (-ll)
+    # Ignoriert .venv, build und dist Ordner (-x)
+    - bandit -r . -ll -x ./.venv,./build,./dist

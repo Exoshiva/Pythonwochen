@@ -12,3 +12,10 @@ daten_export.json
 *.log
 .DS_Store
 
+# Build und Dist Ordner
+build/
+dist/
+*.spec
+# Archive
+*.zip
+

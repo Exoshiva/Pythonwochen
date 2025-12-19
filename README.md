@@ -11,7 +11,7 @@ Es dient nicht nur als Sammelbecken für Python-Projekte, sondern als **aktiver 
 
 ---
 
-## 🛡️ DevSecOps & Security Features
+## DevSecOps & Security Features
 
 Ein Hauptfokus dieses Repositories liegt auf **Automatisierung und Sicherheit**.
 Jeder Commit durchläuft automatisch eine Security-Pipeline, um unsicheren Code zu verhindern.
